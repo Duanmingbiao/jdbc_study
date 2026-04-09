@@ -15,8 +15,10 @@ public class jdbcUtils_use {
             connect.setAutoCommit(false);
             String sql = "insert into test values (?)";
             preparedStatement = connect.prepareStatement(sql);
+            long time = System.currentTimeMillis();
             for(int i = 0; i < 1000;i++){
                 preparedStatement.setString(1,"name" + i);
+//                preparedStatement.execute();
                 preparedStatement.addBatch();
                 if(i % 200 == 0){
                     preparedStatement.executeBatch();
@@ -25,6 +27,8 @@ public class jdbcUtils_use {
             }
             preparedStatement.executeBatch();
             preparedStatement.clearBatch();
+            long time2 = System.currentTimeMillis();
+            System.out.println(time2 - time);
 
             connect.commit();
         } catch (Exception e) {
